@@ -1,0 +1,11 @@
+Vast_ai_folder/experiments/
+FT_Data/
+*.pth
+*.bin
+*.safetensors
+.env
+models/
+smiles_results/
+arrow_shards/
+experiments/
+pubchem-10m.txt

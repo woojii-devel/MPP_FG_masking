@@ -9,3 +9,5 @@ smiles_results/
 arrow_shards/
 experiments/
 pubchem-10m.txt
+__pycache__/
+*.pyc

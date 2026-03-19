@@ -2,7 +2,7 @@ from datasets import load_from_disk
 import torch
 import random
 import numpy as np
-import deepchem as dc
+# import deepchem as dc
 
 class FT_Dataset(torch.utils.data.Dataset):
     def __init__(self, data_path, seed, task, max_len=512,min_len=6):

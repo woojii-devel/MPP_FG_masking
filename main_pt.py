@@ -38,7 +38,7 @@ if (not dist.is_initialized()) or dist.get_rank() == 0:
 
     print("saved best model to:", best_dir)
 
-    env_path = Path("Vast_ai_folder/.env")
+    env_path = Path(".env")
     load_dotenv(env_path)
 
     hf_token = os.getenv("HF_TOKEN")

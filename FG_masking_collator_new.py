@@ -11,7 +11,7 @@ from pytoda.smiles.smiles_language import SMILESTokenizer
 
 class FG_masking_collator:
     
-    def __init__(self, tokenizer, mlm_probability=0.25,max_length = 512,mode='fg'):
+    def __init__(self, tokenizer, mlm_probability=0.25,max_length = 512,mode='hybrid_masking'):
         self.tokenizer = tokenizer
         self.mlm_probability = mlm_probability
         self.mask_id = tokenizer.token_to_index['<MASK>']

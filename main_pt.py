@@ -10,7 +10,7 @@ from huggingface_hub import login, upload_folder
 from dotenv import load_dotenv
 date = datetime.now().strftime("%Y%m%d")
 args = get_args()
-args.pt_masking_method = 'fg_only'
+
 
 print("CUDA_VISIBLE_DEVICES =", os.environ.get("CUDA_VISIBLE_DEVICES"))
 print("LOCAL_RANK =", os.environ.get("LOCAL_RANK"), "RANK =", os.environ.get("RANK"), "WORLD_SIZE =", os.environ.get("WORLD_SIZE"))
@@ -49,6 +49,6 @@ if (not dist.is_initialized()) or dist.get_rank() == 0:
 
     upload_folder(
         folder_path=str(best_dir),
-        repo_id="Zaeus/MPP_FG_only_model",
+        repo_id="Zaeus/hybrid_masking_scaffold",
         repo_type="model"
     )

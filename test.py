@@ -8,5 +8,9 @@ loader = ShardDatasetLoader(
             max_len=512,
             min_len=6,
         )
-
+print("split start")
 train_ds, val_ds, test_ds = loader.dataset()
+print(len(train_ds))
+print(len(val_ds))
+print(len(test_ds))
+print("split finish")

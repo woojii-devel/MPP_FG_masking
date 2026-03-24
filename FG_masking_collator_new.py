@@ -11,9 +11,10 @@ from pytoda.smiles.smiles_language import SMILESTokenizer
 
 class FG_masking_collator:
     
-    def __init__(self, tokenizer, mlm_probability=0.25,max_length = 512,mode='hybrid_masking'):
+    def __init__(self, tokenizer, mlm_probability,max_fg_ratio,max_length = 512,mode='hybrid_masking'):
         self.tokenizer = tokenizer
         self.mlm_probability = mlm_probability
+        self.max_fg_ratio = max_fg_ratio
         self.mask_id = tokenizer.token_to_index['<MASK>']
         self.pad_id = tokenizer.padding_index
         self.bos_id = tokenizer.start_index
@@ -349,12 +350,12 @@ class FG_masking_collator:
             token_atom = token_atom.to(input_ids.device)
             
             ####  debug###########
-            assert len(smi_tokens) == len(input_ids), (
-                f"len(smi_tokens)={len(smi_tokens)} != len(input_ids)={len(input_ids)}"
-            )
-            assert token_atom.shape[0] == input_ids.shape[0], (
-                f"len(token_atom)={token_atom.shape[0]} != len(input_ids)={input_ids.shape[0]}"
-            )
+            # assert len(smi_tokens) == len(input_ids), (
+            #     f"len(smi_tokens)={len(smi_tokens)} != len(input_ids)={len(input_ids)}"
+            # )
+            # assert token_atom.shape[0] == input_ids.shape[0], (
+            #     f"len(token_atom)={token_atom.shape[0]} != len(input_ids)={input_ids.shape[0]}"
+            # )
 
             
             ###################
@@ -388,7 +389,7 @@ class FG_masking_collator:
 
                 else:
                     mask_pos,mask_pos_fg, mask_pos_rd = self.get_mask_pos(token_atom, fg_atoms, smi_tokens, input_ids,
-                                                                          valid,valid_len, max_fg_ratio=0.15)
+                                                                          valid,valid_len, max_fg_ratio=self.max_fg_ratio)
                 
                 labels[mask_pos] = input_ids[mask_pos].clone()
                 input_ids[mask_pos] = self.mask_id

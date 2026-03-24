@@ -128,8 +128,11 @@ class RoBERTa_FG:
         )
         pt_args.remove_unused_columns = False
         print(f'masking_method is {self.args.pt_masking_method}')
+        print(f'mlm_probablilty is {self.args.mlm_probability}')
+        print(f'max_fg_ratio is {self.args.max_fg_ratio}')
         collator = FG_masking_collator(tokenizer= self.tokenizer,
                                        mlm_probability= self.args.mlm_probability,
+                                       max_fg_ratio = self.args.max_fg_ratio,
                                        mode = self.args.pt_masking_method)
         
         

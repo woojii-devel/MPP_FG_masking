@@ -21,7 +21,9 @@ print("[GPU] CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
 print("[GPU] device_count:", torch.cuda.device_count())
 print("[GPU] names:", [torch.cuda.get_device_name(i) for i in range(torch.cuda.device_count())])
 
-
+args.mlm_probability = 0.15
+args.pt_masking_method = 'hybrid_masking'
+args.max_fg_ratio = 0.10
 
 model = RoBERTa_FG(args)
 trainer = model.pretraining()
@@ -49,6 +51,6 @@ if (not dist.is_initialized()) or dist.get_rank() == 0:
 
     upload_folder(
         folder_path=str(best_dir),
-        repo_id="Zaeus/hybrid_masking_scaffold",
+        repo_id="Zaeus/hybrid_masking_15per",
         repo_type="model"
     )

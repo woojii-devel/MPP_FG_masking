@@ -149,6 +149,7 @@ def get_args():
     parser.add_argument("--data_type", type=str,default='smiles')
     parser.add_argument("--model_name", type=str, default='proto-type')
     parser.add_argument("--mlm_probability", type=float, default=0.15)
+    parser.add_argument("--max_fg_ratio", type=float, default=0.10)
     parser.add_argument("--train_bs", type=int, default=512)
     parser.add_argument("--eval_bs", type=int, default=64)
     parser.add_argument("--lr", type=float, default=3e-5)

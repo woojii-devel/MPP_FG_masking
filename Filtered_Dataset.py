@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 from datasets import load_from_disk, concatenate_datasets,get_dataset_config_names, load_dataset
 import torch
 from huggingface_hub import snapshot_download
-import deepchem as dc
+# import deepchem as dc
 import numpy as np
 from torch.utils.data import Subset
 
@@ -148,38 +148,38 @@ class ShardDatasetLoader:
         )
         return filtered
 
-    def scaffold_split_dataset(self,dataset, smiles_list):
-        """
-        dataset: PyTorch Dataset (self 같은거)
-        smiles_list: 각 데이터에 대응되는 SMILES list
-        """
+    # def scaffold_split_dataset(self,dataset, smiles_list):
+    #     """
+    #     dataset: PyTorch Dataset (self 같은거)
+    #     smiles_list: 각 데이터에 대응되는 SMILES list
+    #     """
 
-        # dummy dataset 생성 (DeepChem용)
-        dc_dataset = dc.data.NumpyDataset(
-            X=np.zeros((len(smiles_list), 1)),
-            y=np.zeros(len(smiles_list)),   # pretrain이라 label 필요 없음
-            ids=np.array(smiles_list)
-        )
+    #     # dummy dataset 생성 (DeepChem용)
+    #     dc_dataset = dc.data.NumpyDataset(
+    #         X=np.zeros((len(smiles_list), 1)),
+    #         y=np.zeros(len(smiles_list)),   # pretrain이라 label 필요 없음
+    #         ids=np.array(smiles_list)
+    #     )
 
-        splitter = dc.splits.ScaffoldSplitter()
+    #     splitter = dc.splits.ScaffoldSplitter()
 
-        train_idx, val_idx, test_idx = splitter.split(
-            dc_dataset,
-            frac_train=self.train_ratio,
-            frac_valid=self.val_ratio,
-            frac_test=1 - self.train_ratio - self.val_ratio
-        )
+    #     train_idx, val_idx, test_idx = splitter.split(
+    #         dc_dataset,
+    #         frac_train=self.train_ratio,
+    #         frac_valid=self.val_ratio,
+    #         frac_test=1 - self.train_ratio - self.val_ratio
+    #     )
 
-        train_ds = Subset(dataset, train_idx)
-        val_ds   = Subset(dataset, val_idx)
-        test_ds  = Subset(dataset, test_idx)
+    #     train_ds = Subset(dataset, train_idx)
+    #     val_ds   = Subset(dataset, val_idx)
+    #     test_ds  = Subset(dataset, test_idx)
 
-        print("Scaffold split (pretrain):")
-        print(f"train: {len(train_ds)}")
-        print(f"val: {len(val_ds)}")
-        print(f"test: {len(test_ds)}")
+    #     print("Scaffold split (pretrain):")
+    #     print(f"train: {len(train_ds)}")
+    #     print(f"val: {len(val_ds)}")
+    #     print(f"test: {len(test_ds)}")
 
-        return train_ds, val_ds, test_ds
+    #     return train_ds, val_ds, test_ds
     
     def _split_dataset(self, dataset):
         split_1 = dataset.train_test_split(
@@ -210,8 +210,8 @@ class ShardDatasetLoader:
     def dataset(self):
         merged = self._load_all_shards()
         filtered = self._filter_by_length(merged)
-        smiles_list = filtered["smiles"]
-        train_hf, val_hf, test_hf = self.scaffold_split_dataset(filtered,smiles_list=smiles_list)
+        # smiles_list = filtered["smiles"]
+        train_hf, val_hf, test_hf = self._split_dataset(filtered)
         
 
         train = FilteredHFDataset(
